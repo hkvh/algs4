@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="P2_Queues"/>
+	<classpathentry kind="src" path="P4_8_Puzzle"/>
+	<classpathentry kind="src" path="P1_Percolation"/>
+	<classpathentry kind="src" path="P5_Kd_Trees"/>
+	<classpathentry kind="src" path="P3_Collinear"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/algs4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
