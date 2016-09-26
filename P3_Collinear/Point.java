@@ -61,8 +61,8 @@ public class Point implements Comparable<Point> {
      */
     public double slopeTo(Point that) 
     {
-        int dy = that.y - y;
-        int dx = that.x - x;
+        int dy = that.y - this.y;
+        int dx = that.x - this.x;
         
         //Check if dx = 0, which means the slope is infinity, unless dy = 0 as well
         if ((dx == 0) && (dy == 0))
@@ -74,8 +74,8 @@ public class Point implements Comparable<Point> {
         else if (dy == 0)
         	return new Double(+0.0); //return positive 0 for horizontal line
         
-        else // if dy is defined we can compute slope the nomral way
-        	return (double)dy/(double)dx; //cast as double to avoid int division
+        else // if dy is defined we can compute slope the normal way
+        	return (double)dy/dx; //cast as double to avoid int division
     }
 
     /**
@@ -104,7 +104,6 @@ public class Point implements Comparable<Point> {
         	
     }
 
-
     /**
      * Compares two points by the slope they make with this point.
      * The slope is defined as in the slopeTo() method.
@@ -127,7 +126,7 @@ public class Point implements Comparable<Point> {
     
     /**
      * Returns a string representation of this point.
-     * This method is provide for debugging;
+     * This method is provided for debugging;
      * your program should not rely on the format of the string representation.
      *
      * @return a string representation of this point
