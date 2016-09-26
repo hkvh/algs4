@@ -39,18 +39,22 @@ public class FastCollinearPoints {
 				throw new java.lang.IllegalArgumentException("There was a repeated point in the array");
 		}
 		
-		//loop through each point and check the slopes to see if four or more have the same slope
+		//loop through each point in our duplicate sorted array and check the slopes to see if four or more have the same slope
+		//Note that we use pointsDup instead of points because starting with an pre-sorted array prevents us from having to sort linblock later
+		//This was a hard-to-find optimization because it only could be exposed by the hidden tests 2a-g that put a lot of points in a line, 
+		//But this was making the linblock sort that happened inside the double nested loop use way too many compares
+		
 		for (int i = 0; i < numPoints; i++) {
 
 			//we make and sort a temporary array by slope order with respect to this point as an "origin"
-			Point[] points2 = points.clone();
-			Arrays.sort(points2, points[i].slopeOrder());
+			Point[] points2 = pointsDup.clone();
+			Arrays.sort(points2, pointsDup[i].slopeOrder());
 
 			//Loop through each of these slope-ordered points and look for blocks of three or more points
 			
 			int blockstart = 0; //keep an index for the beginning of a block
 			
-			//Start at j = 1 because want to skip points2[0] = points[i] (since the same point has a slope order of -Inf)
+			//Start at j = 1 because want to skip points2[0] = pointsDup[i] (since the same point has a slope order of -Inf)
 			//<= because we want to include the edgecase where the last points were collinear
 			for (int j = 1; j <= numPoints; j++) {  
 			//we just need to be careful that we treat the case j = numPoints with care since it isn't a valid index, but it is essentially the first index after the array ends
@@ -59,7 +63,7 @@ public class FastCollinearPoints {
 				//we check if we have reached past the final point (j = numPoints) or if the next point is not in the block
 				//both of these cases mean we should consider if the block we have spanned up to but not including this last point is of size 3
 				//if j == numPoints, we should short-circuit before calling points2[j] which would otherwise throw indexoutofbounds
-				if (j == numPoints || points[i].slopeOrder().compare(points2[j], points2[blockstart]) != 0) {
+				if (j == numPoints || pointsDup[i].slopeOrder().compare(points2[j], points2[blockstart]) != 0) {
 					//if this is the case, j is the first point not in the block (or when j = numPoints, we can think of letting j be a placeholder for the point after the array ends)
 					//we need to check if blockstart to j - 1 contains at least 3 points:
 					if (j - blockstart >= 3) {
@@ -68,13 +72,10 @@ public class FastCollinearPoints {
 						for (int k = blockstart; k < j; k++)
 							linblock[k - blockstart] = points2[k];
 
-						//we sort the points in the block by their lexographic order (normal compareTo)
-						Arrays.sort(linblock);
-
 						//check if the origin is smaller then any point in the block (to ensure we only consider each segment once)
 						//if not, we won't create a segment from it, to avoid adding the numPoints-1 duplicate permutations of a block of size numPoints
-						if (points[i].compareTo(linblock[0]) < 0) //since we sorted linblock, we know the smallest one is at index 0
-							this.collinearSegments.add(new LineSegment(points[i], linblock[j - blockstart - 1])); //and the largest one is at index j - blockstart - 1
+						if (pointsDup[i].compareTo(linblock[0]) < 0) //since we sorted linblock, we know the smallest one is at index 0
+							this.collinearSegments.add(new LineSegment(pointsDup[i], linblock[j - blockstart - 1])); //and the largest one is at index j - blockstart - 1
 					}
 
 					//then this wasn't a block of sufficient size so move the blockstart to our current index j
