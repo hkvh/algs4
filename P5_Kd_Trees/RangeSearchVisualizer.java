@@ -1,12 +1,7 @@
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.algs4.StdDraw;
-
-/*************************************************************************
+/******************************************************************************
  *  Compilation:  javac RangeSearchVisualizer.java
  *  Execution:    java RangeSearchVisualizer input.txt
- *  Dependencies: PointSET.java KdTree.java Point2D.java RectHV.java
- *                StdDraw.java In.java
+ *  Dependencies: PointSET.java KdTree.java
  *
  *  Read points from a file (specified as a command-line arugment) and
  *  draw to standard draw. Also draw all of the points in the rectangle
@@ -15,7 +10,12 @@ import edu.princeton.cs.algs4.StdDraw;
  *  The range search results using the brute-force algorithm are drawn
  *  in red; the results using the kd-tree algorithms are drawn in blue.
  *
- *************************************************************************/
+ ******************************************************************************/
+
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.StdDraw;
 
 public class RangeSearchVisualizer {
 
@@ -24,8 +24,7 @@ public class RangeSearchVisualizer {
         String filename = args[0];
         In in = new In(filename);
 
-
-        StdDraw.show(0);
+        StdDraw.enableDoubleBuffering();
 
         // initialize the data structures with N points from standard input
         PointSET brute = new PointSET();
@@ -45,11 +44,11 @@ public class RangeSearchVisualizer {
         // draw the points
         StdDraw.clear();
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(.01);
+        StdDraw.setPenRadius(0.01);
         brute.draw();
+        StdDraw.show();
 
         while (true) {
-            StdDraw.show(40);
 
             // user starts to drag a rectangle
             if (StdDraw.mousePressed() && !isDragging) {
@@ -77,7 +76,7 @@ public class RangeSearchVisualizer {
             // draw the points
             StdDraw.clear();
             StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(.01);
+            StdDraw.setPenRadius(0.01);
             brute.draw();
 
             // draw the rectangle
@@ -86,7 +85,7 @@ public class RangeSearchVisualizer {
             rect.draw();
 
             // draw the range search results for brute-force data structure in red
-            StdDraw.setPenRadius(.03);
+            StdDraw.setPenRadius(0.03);
             StdDraw.setPenColor(StdDraw.RED);
             for (Point2D p : brute.range(rect))
                 p.draw();
@@ -97,7 +96,8 @@ public class RangeSearchVisualizer {
             for (Point2D p : kdtree.range(rect))
                 p.draw();
 
-            StdDraw.show(40);
+            StdDraw.show();
+            StdDraw.pause(40);
         }
     }
 }

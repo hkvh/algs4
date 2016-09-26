@@ -1,11 +1,7 @@
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.algs4.StdDraw;
-
-/*************************************************************************
+/******************************************************************************
  *  Compilation:  javac NearestNeighborVisualizer.java
  *  Execution:    java NearestNeighborVisualizer input.txt
- *  Dependencies: PointSET.java KdTree.java Point2D.java In.java StdDraw.java
+ *  Dependencies: PointSET.java KdTree.java
  *
  *  Read points from a file (specified as a command-line argument) and
  *  draw to standard draw. Highlight the closest point to the mouse.
@@ -13,7 +9,11 @@ import edu.princeton.cs.algs4.StdDraw;
  *  The nearest neighbor according to the brute-force algorithm is drawn
  *  in red; the nearest neighbor using the kd-tree algorithm is drawn in blue.
  *
- *************************************************************************/
+ ******************************************************************************/
+
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.StdDraw;
 
 public class NearestNeighborVisualizer {
 
@@ -21,7 +21,7 @@ public class NearestNeighborVisualizer {
         String filename = args[0];
         In in = new In(filename);
 
-        StdDraw.show(0);
+        StdDraw.enableDoubleBuffering();
 
         // initialize the two data structures with point from standard input
         PointSET brute = new PointSET();
@@ -44,20 +44,20 @@ public class NearestNeighborVisualizer {
             // draw all of the points
             StdDraw.clear();
             StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(.01);
+            StdDraw.setPenRadius(0.01);
             brute.draw();
 
             // draw in red the nearest neighbor (using brute-force algorithm)
-            StdDraw.setPenRadius(.03);
+            StdDraw.setPenRadius(0.03);
             StdDraw.setPenColor(StdDraw.RED);
             brute.nearest(query).draw();
-            StdDraw.setPenRadius(.02);
+            StdDraw.setPenRadius(0.02);
 
             // draw in blue the nearest neighbor (using kd-tree algorithm)
             StdDraw.setPenColor(StdDraw.BLUE);
             kdtree.nearest(query).draw();
-            StdDraw.show(0);
-            StdDraw.show(40);
+            StdDraw.show();
+            StdDraw.pause(40);
         }
     }
 }
